@@ -1,6 +1,6 @@
-# Write TypeScript Lambda functions in AWS CDK - Complete Guide
+## TypeScript Lambda functions in AWS CDK
 
-## How to Use
+### How to Use
 
 1. Clone the repository
 
