@@ -35,3 +35,7 @@ cdk deploy
 ```bash
 cdk destroy
 ```
+
+- Make sure to go to S3, and delete the bucket with name something that looks like(`cdk-*-us-west-2`)
+
+- Make sure to go to CloudFormation, and delete any Stack related (especially - `CDKToolkit`)

@@ -13,6 +13,7 @@
     "lint": "eslint . --ext js,jsx,ts,tsx --fix"
   },
   "dependencies": {
+    "@aws-cdk/aws-lambda": "^1.163.1",
     "aws-cdk-lib": "^2.20.0",
     "constructs": "^10.0.112",
     "source-map-support": "^0.5.21"
