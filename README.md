@@ -35,5 +35,3 @@ cdk deploy
 ```bash
 cdk destroy
 ```
-
-npx aws-cdk deploy --no-previous-parameters
