@@ -7,7 +7,9 @@ export async function main(
   console.log("event 👉", event);
 
   return {
-    body: JSON.stringify({ message: "Successful Private lambda invocation" }),
+    body: JSON.stringify({
+      message: "Successful Private lambda invocation from Public lambda!!",
+    }),
     statusCode: 200,
   };
 }
