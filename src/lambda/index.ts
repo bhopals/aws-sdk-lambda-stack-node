@@ -3,6 +3,7 @@ import { APIGatewayProxyEventV2, APIGatewayProxyResultV2 } from "aws-lambda";
 import { Lambda } from "@aws-sdk/client-lambda";
 import { TextDecoder, TextEncoder } from "util";
 import {
+  appName,
   LambdaType,
   INVOCATION_TYPE,
   UTF_8,
@@ -19,7 +20,7 @@ export async function main(
   try {
     const lambdaClient = new Lambda({});
     const { Payload } = await lambdaClient.invoke({
-      FunctionName: LambdaType.PRIVATE_LAMBDA,
+      FunctionName: `${appName}-${LambdaType.PRIVATE_LAMBDA}`,
       InvocationType: INVOCATION_TYPE,
       Payload: new TextEncoder().encode(JSON.stringify({ event, context })),
     });

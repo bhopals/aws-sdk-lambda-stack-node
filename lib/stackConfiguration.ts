@@ -2,7 +2,7 @@ export const UTF_8 = "utf-8";
 export const AWS_SDK = "aws-sdk";
 export const handler: string = "main";
 export const region: string = "us-west-2";
-export const appName: string = "cdk-stack";
+export const appName: string = "lambda-stack";
 
 export const FUN_LABEL: string = ":function:";
 export const ARN_LABEL: string = "arn:aws:lambda:";
