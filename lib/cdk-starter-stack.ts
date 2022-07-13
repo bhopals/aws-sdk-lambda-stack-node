@@ -1,5 +1,7 @@
 import * as cdk from "aws-cdk-lib";
 import { NodejsFunction } from "aws-cdk-lib/aws-lambda-nodejs";
+import { Role, ServicePrincipal, PolicyStatement } from "aws-cdk-lib/aws-iam";
+
 import * as lambda from "aws-cdk-lib/aws-lambda";
 import * as path from "path";
 import { CfnOutput } from "aws-cdk-lib";
@@ -7,6 +9,17 @@ import { CfnOutput } from "aws-cdk-lib";
 export class CdkStarterStack extends cdk.Stack {
   constructor(scope: cdk.App, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
+
+    const role = new Role(this, "MyRole", {
+      assumedBy: new ServicePrincipal("lambda.amazonaws.com"),
+    });
+
+    role.addToPolicy(
+      new PolicyStatement({
+        resources: ["*"],
+        actions: ["lambda:InvokeFunction"],
+      })
+    );
 
     /*** PRIVATE LAMBDA FUNCTION */
     const internalLambda = new NodejsFunction(this, "internal-lambda", {
@@ -29,6 +42,7 @@ export class CdkStarterStack extends cdk.Stack {
       timeout: cdk.Duration.seconds(5),
       runtime: lambda.Runtime.NODEJS_16_X,
       handler: "main",
+      role,
       entry: path.join(__dirname, `/../src/lambda/index.ts`),
       bundling: {
         minify: false,
