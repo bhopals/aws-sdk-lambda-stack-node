@@ -8,7 +8,7 @@ export async function main(
 
   return {
     body: JSON.stringify({
-      message: "Successful Private lambda invocation from Public lambda!!!!!",
+      message: "Successful Private lambda invocation from Public lambda!!!",
     }),
     statusCode: 200,
   };
