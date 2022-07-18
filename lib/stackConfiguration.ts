@@ -8,6 +8,8 @@ export const FUN_LABEL: string = ":function:";
 export const ARN_LABEL: string = "arn:aws:lambda:";
 export const INVOCATION_TYPE = "RequestResponse";
 
+export const RDS_ARN = "AR:<>";
+
 export const BASE_PATH: string = "/../src/lambda";
 export const PUBLIC_LAMBDA_URL: string = "publicLambdaUrl";
 export const PUBLIC_LAMBDA_PATH: string = `${BASE_PATH}/index.ts`;
