@@ -12,7 +12,7 @@ export const RDS_ARN = "AR:<>";
 
 export const BASE_PATH: string = "/../src/lambda";
 export const PUBLIC_LAMBDA_URL: string = "publicLambdaUrl";
-export const GENERATOR_LAMBDA_URL: string = "publicLambdaUrl";
+export const GENERATOR_LAMBDA_URL: string = "genLambdaUrl";
 
 export const PUBLIC_LAMBDA_PATH: string = `${BASE_PATH}/index.ts`;
 export const GENERATOR_LAMBDA_PATH: string = `${BASE_PATH}/generateFn.ts`;

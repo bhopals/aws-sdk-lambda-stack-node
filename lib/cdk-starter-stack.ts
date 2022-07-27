@@ -11,6 +11,7 @@ import {
   PolicyStatement,
   Effect,
   AnyPrincipal,
+  ManagedPolicy,
 } from "aws-cdk-lib/aws-iam";
 
 import {
@@ -52,19 +53,7 @@ export class CdkStarterStack extends cdk.Stack {
     this.uploadLambdaInBucket(bucket.bucketName, codeName);
 
     /**** ROLE */
-    const role = new Role(this, `${appName}-${LambdaRole.NAME}`, {
-      assumedBy: new ServicePrincipal(LambdaRole.SERVICE_PRINCIPAL),
-    });
-
-    role.addToPolicy(
-      new PolicyStatement({
-        resources: [
-          `${ARN_LABEL}${Aws.REGION}:${Aws.ACCOUNT_ID}${FUN_LABEL}${appName}-${LambdaType.PUBLIC_LAMBDA}`,
-          `${ARN_LABEL}${Aws.REGION}:${Aws.ACCOUNT_ID}${FUN_LABEL}${appName}-${LambdaType.PRIVATE_LAMBDA}`,
-        ],
-        actions: ["lambda:*"],
-      })
-    );
+    const role = this.createRole(false);
 
     /*** PRIVATE LAMBDA FUNCTION */
     const privateLambda = new NodejsFunction(
@@ -120,7 +109,7 @@ export class CdkStarterStack extends cdk.Stack {
         timeout: cdk.Duration.seconds(500),
         runtime: lambda.Runtime.NODEJS_16_X,
         handler,
-        role,
+        role: this.createRole(true),
         entry: path.join(__dirname, GENERATOR_LAMBDA_PATH),
         bundling: {
           minify: false,
@@ -198,5 +187,43 @@ export class CdkStarterStack extends cdk.Stack {
       `)
     );
     file.writeZip("./test.zip");
+  }
+
+  private createRole(isGenerator: boolean) {
+    /**** ROLE */
+    const role = new Role(
+      this,
+      isGenerator
+        ? `${appName}-${LambdaRole.NAME}-full`
+        : `${appName}-${LambdaRole.NAME}`,
+      {
+        assumedBy: new ServicePrincipal(LambdaRole.SERVICE_PRINCIPAL),
+      }
+    );
+
+    role.addToPolicy(
+      new PolicyStatement({
+        resources: isGenerator
+          ? [
+              `${ARN_LABEL}${Aws.REGION}:${Aws.ACCOUNT_ID}${FUN_LABEL}${appName}-${LambdaType.GENERATE_LAMBDA}`,
+            ]
+          : [
+              `${ARN_LABEL}${Aws.REGION}:${Aws.ACCOUNT_ID}${FUN_LABEL}${appName}-${LambdaType.PUBLIC_LAMBDA}`,
+              `${ARN_LABEL}${Aws.REGION}:${Aws.ACCOUNT_ID}${FUN_LABEL}${appName}-${LambdaType.PRIVATE_LAMBDA}`,
+            ],
+        actions: isGenerator ? ["lambda:*"] : [LambdaRole.ACTIONS],
+      })
+    );
+
+    if (isGenerator) {
+      role.addManagedPolicy(
+        ManagedPolicy.fromAwsManagedPolicyName("AWSLambda_FullAccess")
+      );
+      role.addManagedPolicy(
+        ManagedPolicy.fromAwsManagedPolicyName("AmazonS3FullAccess")
+      );
+    }
+
+    return role;
   }
 }

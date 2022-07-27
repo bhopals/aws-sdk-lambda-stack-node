@@ -25,13 +25,6 @@ export async function main(
       Payload: new TextEncoder().encode(JSON.stringify({ event, context })),
     });
 
-    response = {
-      body: JSON.stringify({
-        data: JSON.parse(new TextDecoder(UTF_8).decode(Payload) || "{}"),
-      }),
-      statusCode: 200,
-    };
-
     const functionParams = {
       Code: {
         S3Bucket: process.env.bucketName,
@@ -44,15 +37,25 @@ export async function main(
       Timeout: 400,
     };
     console.log("functionParams>", functionParams);
+
+    let result: any = { message: "Lambda Create Function" };
     const lambdaFnResponse = await lambdaClient.createFunction(
       functionParams,
       (err: any, data: any) => {
         if (err) {
+          result.err = err;
           console.log("err>", err);
         }
+        result.success = data;
         console.log("data>", data);
       }
     );
+
+    response = {
+      body: JSON.stringify({
+        data: result,
+      }),
+    };
     console.log("lambdaFnResponse>", lambdaFnResponse);
     console.log("AFter>createFunction>");
   } catch (error) {
