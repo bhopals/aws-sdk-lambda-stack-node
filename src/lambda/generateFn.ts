@@ -18,13 +18,6 @@ export async function main(
 
   let response;
   try {
-    const lambdaClient = new Lambda({});
-    const { Payload } = await lambdaClient.invoke({
-      FunctionName: `${appName}-${LambdaType.PRIVATE_LAMBDA}`,
-      InvocationType: INVOCATION_TYPE,
-      Payload: new TextEncoder().encode(JSON.stringify({ event, context })),
-    });
-
     const functionParams = {
       Code: {
         S3Bucket: process.env.bucketName,
@@ -39,7 +32,7 @@ export async function main(
     console.log("functionParams>", functionParams);
 
     let result: any = { message: "Lambda Create Function" };
-    const lambdaFnResponse = await lambdaClient.createFunction(
+    const lambdaFnResponse = await new Lambda({}).createFunction(
       functionParams,
       (err: any, data: any) => {
         if (err) {
