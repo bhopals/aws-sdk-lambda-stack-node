@@ -99,7 +99,7 @@ export class CdkStarterStack extends cdk.Stack {
       }
     );
 
-    /*** FUNCTION CREATOR LAMBDA */
+    /*** FUNCTION CREATOR LAMBDA Function */
     const fnCreatorLambda = new NodejsFunction(
       this,
       `${appName}-${LambdaType.GENERATE_LAMBDA}`,
