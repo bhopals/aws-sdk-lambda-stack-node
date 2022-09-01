@@ -74,7 +74,7 @@ export class CdkStarterStack extends cdk.Stack {
       }
     );
 
-    /*** PUBLIC LAMBDA FUNCTION creation */
+    /*** PUBLIC LAMBDA FUNCTION  */
     const publicLambda = new NodejsFunction(
       this,
       `${appName}-${LambdaType.PUBLIC_LAMBDA}`,
