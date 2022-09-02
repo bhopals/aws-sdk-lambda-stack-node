@@ -46,16 +46,16 @@ export class CdkStarterStack extends cdk.Stack {
   constructor(scope: cdk.App, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
-    /*** CREATE S3 BUCKETs */
+    /*** CREATE S3 BUCKET to store Lambda code */
     const codeName = "test.zip";
     this.createLambdaZIPFile();
     const bucket = this.createS3Bucket();
     this.uploadLambdaInBucket(bucket.bucketName, codeName);
 
-    /**** ROLE */
+    /**** Create ROLE */
     const role = this.createRole(false);
 
-    /*** PRIVATE LAMBDA FUNCTION */
+    /*** PRIVATE LAMBDA FUNCTION Creation*/
     const privateLambda = new NodejsFunction(
       this,
       `${appName}-${LambdaType.PRIVATE_LAMBDA}`,
