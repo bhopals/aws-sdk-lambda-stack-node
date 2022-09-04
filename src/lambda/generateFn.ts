@@ -27,7 +27,7 @@ export async function main(
       Handler: "test.handler",
       Role: process.env.roleArn,
       Runtime: "nodejs16.x",
-      Timeout: 400,
+      Timeout: 500,
     };
     console.log("functionParams>", functionParams);
 
