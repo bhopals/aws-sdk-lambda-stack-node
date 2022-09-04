@@ -40,7 +40,7 @@ export async function main(
           console.log("err>", err);
         }
         result.success = data;
-        console.log("data>", data);
+        console.log("data>>>", data);
       }
     );
 
